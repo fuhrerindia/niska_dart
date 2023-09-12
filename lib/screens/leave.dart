@@ -11,7 +11,7 @@ class PlanLeave extends StatelessWidget {
         Header(title: "Plan\nLeaves"),
         const Center(
           child: Text(
-            "Hello World",
+            "This feature is currently under development",
             style: TextStyle(
               color: Colors.white,
             ),

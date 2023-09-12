@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -14,13 +15,32 @@ class FeedScreen extends StatefulWidget {
 
 class _FeedScreenState extends State<FeedScreen> {
   List _data_to_render = [];
+  int balance = 0;
 
   void doThis() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final List<String> data = await prefs.getStringList('data') ?? [];
-    setState(() {
-      _data_to_render = data;
+    Timer(const Duration(milliseconds: 800), () {
+      setState(() {
+        _data_to_render = data;
+      });
+      balance = calculateBalance();
     });
+  }
+
+  int calculateBalance() {
+    int balance = 0;
+    for (String element in _data_to_render) {
+      Map data = jsonDecode(element);
+      int amount = data['amount'];
+      String arth = data['type'];
+      if (arth == 'credit') {
+        balance = balance + amount;
+      } else {
+        balance = balance - amount;
+      }
+    }
+    return balance;
   }
 
   @override
@@ -43,7 +63,27 @@ class _FeedScreenState extends State<FeedScreen> {
                   itemCount: _data_to_render.length,
                   itemBuilder: (BuildContext context, int index) {
                     if (index == 0) {
-                      return Header(title: "Past\nExpenses");
+                      return Column(
+                        children: [
+                          Header(title: "Past\nExpenses"),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 15, horizontal: 20),
+                            child: Row(
+                              children: [
+                                Text(
+                                  "₹$balance",
+                                  style: const TextStyle(
+                                    color: Colors.green,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                )
+                              ],
+                            ),
+                          )
+                        ],
+                      );
                     } else {
                       int index_ = index - 1;
                       Map record = jsonDecode(_data_to_render[index_]);

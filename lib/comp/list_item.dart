@@ -80,12 +80,12 @@ class _ListItem extends State<ListItem> {
               if (showInfo == true)
                 Container(
                   alignment: Alignment.centerLeft,
-                  child: const Padding(
-                    padding: EdgeInsets.only(top: 10),
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 10),
                     child: Text(
-                      'sdfsdfs',
+                      widget.info,
                       textAlign: TextAlign.left,
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Colors.white,
                       ),
                     ),

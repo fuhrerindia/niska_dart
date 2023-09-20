@@ -6,18 +6,22 @@ class PlanLeave extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Header(title: "Plan\nLeaves"),
-        const Center(
-          child: Text(
-            "This feature is currently under development",
-            style: TextStyle(
-              color: Colors.white,
+    double statusBarHeight = MediaQuery.of(context).padding.top;
+    return Padding(
+      padding: EdgeInsets.only(top: statusBarHeight),
+      child: Column(
+        children: [
+          Header(title: "Plan\nLeaves"),
+          const Center(
+            child: Text(
+              "This feature is currently under development",
+              style: TextStyle(
+                color: Colors.white,
+              ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

@@ -45,11 +45,14 @@ class _FeedScreenState extends State<FeedScreen> {
 
   @override
   void initState() {
+    super.initState();
     doThis();
   }
 
   @override
   Widget build(BuildContext context) {
+    String lastSection = "";
+    String currentSection = "";
     return Column(
       children: [
         Expanded(
@@ -60,8 +63,10 @@ class _FeedScreenState extends State<FeedScreen> {
                   ),
                 )
               : ListView.builder(
-                  itemCount: _data_to_render.length,
+                  itemCount: _data_to_render.length + 1,
                   itemBuilder: (BuildContext context, int index) {
+                    // if (lastSection)
+                    // currentSection =
                     if (index == 0) {
                       return Column(
                         children: [
@@ -70,6 +75,7 @@ class _FeedScreenState extends State<FeedScreen> {
                             padding: const EdgeInsets.symmetric(
                                 vertical: 15, horizontal: 20),
                             child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
                                   "₹$balance",
@@ -78,7 +84,14 @@ class _FeedScreenState extends State<FeedScreen> {
                                     fontSize: 18,
                                     fontWeight: FontWeight.bold,
                                   ),
-                                )
+                                ),
+                                InkWell(
+                                  onTap: () {},
+                                  child: const Icon(
+                                    Icons.filter_alt,
+                                    color: Colors.white,
+                                  ),
+                                ),
                               ],
                             ),
                           )
@@ -87,11 +100,42 @@ class _FeedScreenState extends State<FeedScreen> {
                     } else {
                       int index_ = index - 1;
                       Map record = jsonDecode(_data_to_render[index_]);
+                      currentSection = record['current'] ?? "";
+                      currentSection = currentSection.split(" at ")[0];
                       int priceAmount = record['amount'];
-                      return ListItem(
+                      if (lastSection != currentSection) {
+                        lastSection = currentSection;
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(30, 5, 0, 0),
+                              child: Text(
+                                currentSection,
+                                textAlign: TextAlign.left,
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                            ListItem(
+                              price: "$priceAmount",
+                              profit: record['type'] == 'credit' ? true : false,
+                              info: record['remark'] == ""
+                                  ? "No Information"
+                                  : record['remark'],
+                              time: record['current'] ?? '',
+                            )
+                          ],
+                        );
+                      } else {
+                        return ListItem(
                           price: "$priceAmount",
                           profit: record['type'] == 'credit' ? true : false,
-                          info: record['remark']);
+                          info: record['remark'],
+                          time: record['current'] ?? '',
+                        );
+                      }
                     }
                   },
                 ),

@@ -1,4 +1,4 @@
-package com.example.niska
+package com.info_themorningindia.niska
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -4,11 +4,16 @@ class ListItem extends StatefulWidget {
   String price = "";
   bool profit = false;
   String info = "";
-  ListItem(
-      {super.key,
-      required this.price,
-      required this.profit,
-      required this.info});
+  String time = "";
+  void holdThis;
+  ListItem({
+    super.key,
+    required this.price,
+    required this.profit,
+    required this.info,
+    required this.time,
+    // required this.holdThis,
+  });
   @override
   State createState() {
     return _ListItem();
@@ -28,11 +33,11 @@ class _ListItem extends State<ListItem> {
     String sign = widget.profit ? "+" : "-";
     String price = widget.price;
     return Padding(
-      padding: EdgeInsets.all(10),
+      padding: const EdgeInsets.all(10),
       child: Container(
-        padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
+        padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
         decoration: BoxDecoration(
-          color: Color(0xff282828),
+          color: const Color(0xff282828),
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
             color: Colors.white,
@@ -41,10 +46,16 @@ class _ListItem extends State<ListItem> {
         ),
         child: InkWell(
           onTap: toggleInfo,
+          onLongPress: () {},
+          onDoubleTap: () {},
           child: Column(
             children: [
               Row(
                 children: [
+                  const Checkbox(
+                    value: false,
+                    onChanged: null,
+                  ),
                   Icon(
                     Icons.account_balance_wallet,
                     color: widget.profit == true ? Colors.green : Colors.red,
@@ -82,12 +93,27 @@ class _ListItem extends State<ListItem> {
                   alignment: Alignment.centerLeft,
                   child: Padding(
                     padding: const EdgeInsets.only(top: 10),
-                    child: Text(
-                      widget.info,
-                      textAlign: TextAlign.left,
-                      style: const TextStyle(
-                        color: Colors.white,
-                      ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          widget.time,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 10),
+                          child: Text(
+                            widget.info,
+                            textAlign: TextAlign.left,
+                            style: const TextStyle(
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),

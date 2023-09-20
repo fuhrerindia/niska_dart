@@ -40,11 +40,32 @@ class _NewRecordState extends State<NewRecord> {
             );
           });
     } else {
+      DateTime now = DateTime.now();
+      DateTime current = DateTime(now.day, now.month, now.year);
+      DateTime time = DateTime(now.hour, now.minute);
+      List months = <String>[
+        'January',
+        'February',
+        'March',
+        'April',
+        'May',
+        'June',
+        'July',
+        'August',
+        'September',
+        'October',
+        'November',
+        'December',
+      ];
+      String min = now.minute < 10 ? "0${now.minute}" : "${now.minute}";
+      String currentTime =
+          "${now.day} ${months[now.month - 1]}, ${now.year} at ${now.hour}:$min";
       Map record_ = {
         'amount': amount,
         'remark': remark,
         'group': group_name,
         'type': currentRadioValue,
+        'current': currentTime,
       };
       String record = jsonEncode(record_);
       final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -72,9 +93,11 @@ class _NewRecordState extends State<NewRecord> {
 
   @override
   Widget build(BuildContext context) {
+    double statusBarHeight = MediaQuery.of(context).padding.top;
     return SingleChildScrollView(
       scrollDirection: Axis.vertical,
       child: Container(
+        padding: EdgeInsets.only(top: statusBarHeight),
         child: Column(
           children: [
             Header(title: "New\nExpense"),
